@@ -1,23 +1,15 @@
-// // https://www.w3schools.com/nodejs/nodejs_modules.asp
-// const http = require('http');
+// https://www.w3schools.com/nodejs/nodejs_modules.asp
+const http = require('https');
+const app = require('./app');
+const fs = require('fs')
 
-// const PORT = 3000;
+const port = 3000;
 
-// // https://www.w3schools.com/nodejs/met_http_createserver.asp
-// const server = http.createServer((req,res)=> {
-//     res.end('Hello World');
-// });
+// https://www.w3schools.com/nodejs/met_http_createserver.asp
+const server = http.createServer(
+    {
+        key: fs.readFileSync('keys/privatekey.pem'),
+        cert: fs.readFileSync('keys/Certificate.pem')
+    },app);
 
-// server.listen(PORT);
-
-// https://expresjs.com/en/started/hello-world.html
-const express = require('express')
-const app = express()
-const port = 3000
-
-// https://expressjs.com/en/4x/api.html#app.get
-app.get('/', (req, res) => {
-    res.send('Hello World Express')
-})
-
-app.listen(port)
+server.listen(port);
