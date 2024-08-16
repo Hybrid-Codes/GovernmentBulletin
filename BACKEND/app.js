@@ -2,13 +2,13 @@
 const express = require('express');
 const app = express();
 const urlprefix = '/api';
-const mongoose = require('mongosoe');
-const Fruit = require('.module/fruit');
+const mongoose = require('mongoose');
+const Fruit = require('./Models/fruit');
 const fs = require('fs');
 const cert = fs.readFileSync('keys/certificate.pem');
 const options = {
-    server: {sslCA: cert}};
-const connString = 'mongodb+srv://st10086237:auZt2d10HnN6NH8p@cluster0.tq6azhe.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+    server: { sslCA: cert }};
+const connString = "mongodb+srv://st10086237:auZt2d10HnN6NH8p@cluster0.tq6azhe.mongodb.net/farmDatabase?retryWrites=true&w=majority&appName=Cluster0";
 
 mongoose.connect(connString)
 .then(()=>
@@ -34,30 +34,30 @@ app.use(express.json());
 // https://www.json.org/json-en.html
 // {} = object
 // [] = array
-app.get(urlprefix+'/orders', (req, res) => {
-    const orders = [
-        {
-            id:"1",
-            name: "Orange"
-        },
+// app.get(urlprefix+'/orders', (req, res) => {
+//     const orders = [
+//         {
+//             id:"1",
+//             name: "Orange"
+//         },
 
-        {
-            id:"2",
-            name: "Banana"
-        },
+//         {
+//             id:"2",
+//             name: "Banana"
+//         },
 
-        {
-            id:"3",
-            name: "Pear"
-        }
-    ]
-    res.json(
-        {
-            message: "Fruits",
-            orders: orders
-        }
-    )
-});
+//         {
+//             id:"3",
+//             name: "Pear"
+//         }
+//     ]
+//     res.json(
+//         {
+//             message: "Fruits",
+//             orders: orders
+//         }
+//     )
+// });
 
 app.post(urlprefix+'/fruits', (req, res) => {
     const fruit = new Fruit (
@@ -66,7 +66,7 @@ app.post(urlprefix+'/fruits', (req, res) => {
             name: req.body.name
         }
     );
-    fruit.save();
+    fruit.save().then;
     res.status(201).json({
         message: 'Fruit created',
         fruit: fruit
