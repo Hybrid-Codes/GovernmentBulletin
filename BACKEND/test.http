@@ -4,6 +4,10 @@ GET http://localhost:3000/api/fruits HTTP/1.1
 ###
 GET https://localhost:3000/api HTTP/1.1
 ###
+GET https://localhost:3000/api/fruits HTTP/1.1
+###
+DELETE https://localhost:3000/api/fruits/66c300c5a5618b73a44e81fb HTTP/1.1
+###
 POST https://localhost:3000/api/fruits HTTP/1.1
 content-type: application/json
 
