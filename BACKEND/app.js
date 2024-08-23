@@ -10,6 +10,8 @@ const options = {
     server: { sslCA: cert }};
 const connString = "mongodb+srv://st10086237:auZt2d10HnN6NH8p@cluster0.tq6azhe.mongodb.net/farmDatabase?retryWrites=true&w=majority&appName=Cluster0";
 
+const fruitRoutes = require("./routes/fruit");
+
 mongoose.connect(connString)
 .then(()=>
 {
@@ -22,42 +24,17 @@ mongoose.connect(connString)
 
 app.use(express.json());
 
-// https://expressjs.com/en/4x/api.html#app.get
-    // app.get('/', (req, res) => {
-    //     res.send('Hello World Express')
-    // });
+app.get(urlprefix+'/fruits', (req, res) => {
 
-    // app.get('/test', (req, res) => {
-    //     res.send('Hello World Express /test')
-    // });
-
-// https://www.json.org/json-en.html
-// {} = object
-// [] = array
-// app.get(urlprefix+'/orders', (req, res) => {
-//     const orders = [
-//         {
-//             id:"1",
-//             name: "Orange"
-//         },
-
-//         {
-//             id:"2",
-//             name: "Banana"
-//         },
-
-//         {
-//             id:"3",
-//             name: "Pear"
-//         }
-//     ]
-//     res.json(
-//         {
-//             message: "Fruits",
-//             orders: orders
-//         }
-//     )
-// });
+    Fruit.find().then((fruits)=>{
+        res.json(
+            {
+                message: 'Fruits found',
+                fruits:fruits
+            }
+        )
+    })
+});
 
 app.post(urlprefix+'/fruits', (req, res) => {
     const fruit = new Fruit (
@@ -70,6 +47,13 @@ app.post(urlprefix+'/fruits', (req, res) => {
     res.status(201).json({
         message: 'Fruit created',
         fruit: fruit
+    });
+});
+
+app.delete(urlprefix+"/fruits/:id", (req, res) => {
+
+    Fruit.deleteOne({_id: req.params.id}).then((result)=>{
+        res.status(200).json({message: 'Fruits deleted',})
     });
 });
 
